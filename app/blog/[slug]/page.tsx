@@ -209,7 +209,7 @@ export default async function BlogPostPage({ params }: PageProps) {
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
               <a
-                href={`https://wa.me/12025550188?text=Hello%20I%20read%20your%20article%20on%20${encodeURIComponent(post.title)}%20and%20want%20to%20discuss%20pricing`}
+                href={`https://wa.me/447341056054?text=Hello%20I%20read%20your%20article%20on%20${encodeURIComponent(post.title)}%20and%20want%20to%20discuss%20pricing`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full sm:w-auto px-6 py-2.5 bg-[#25D366] text-white hover:bg-[#20ba5a] text-[10px] font-mono font-bold tracking-widest uppercase rounded flex items-center justify-center gap-1.5"

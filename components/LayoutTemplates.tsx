@@ -380,7 +380,7 @@ export function OrderBuilder() {
 
     const encoded = encodeURIComponent(text);
     if (channel === 'whatsapp') {
-      const number = "12025550188"; // Luxury support placeholder
+      const number = "447341056054"; // Luxury support placeholder
       window.open(`https://wa.me/${number}?text=${encoded}`, '_blank', 'noopener,noreferrer');
     } else {
       const mailtoUrl = `mailto:sales@reelbills.com?subject=Prop Currency Secure Order Request&body=${encoded}`;

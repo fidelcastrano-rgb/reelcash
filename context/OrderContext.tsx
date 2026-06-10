@@ -108,7 +108,7 @@ export function OrderProvider({ children }: { children: React.ReactNode }) {
   const sendWA = () => {
     const text = getOrderSummaryText();
     // Default country dial code or secure placeholder for flexible configuration
-    const number = "12025550188"; // Luxury support placeholder
+    const number = "447341056054"; // Luxury support placeholder
     window.open(`https://wa.me/${number}?text=${text}`, '_blank', 'noopener,noreferrer');
   };
 

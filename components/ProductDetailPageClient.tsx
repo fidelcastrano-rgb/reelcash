@@ -69,7 +69,7 @@ export default function ProductDetailPageClient({ product, relatedProducts }: Pr
     text += `• Rate Amount: ${currencySymbol}${activeVariant.price} ${currencyCode}\n\n`;
     text += `Please send me payment instructions and dispatch timeline.\n`;
     text += `══════════════════════════════════════`;
-    const number = "12025550188"; // Support line
+    const number = "447341056054"; // Support line
     window.open(`https://wa.me/${number}?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
   };
 
