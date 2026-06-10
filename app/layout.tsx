@@ -19,6 +19,9 @@ const dmSans = DM_Sans({
 export const metadata: Metadata = {
   title: 'Reel Cash and Currency | Ultra-Realistic Film Props',
   description: 'The world\'s most trusted realistic currency printer. Premium motion picture banknotes and prop replicates for film, TV, and collections.',
+  icons: {
+    icon: '/IMGIYUTRT.png',
+  },
 };
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
