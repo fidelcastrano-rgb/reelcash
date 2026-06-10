@@ -1,0 +1,8 @@
+{
+  "name": "Remix: Reel Cash and Currency",
+  "description": "The World\u0027s Most Trusted Realistic Currency Printer \u0026 Premium motion-picture grade replica banknotes provider.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

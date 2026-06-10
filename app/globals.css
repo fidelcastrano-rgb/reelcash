@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+@keyframes marquee {
+  0% { transform: translateX(5%); }
+  100% { transform: translateX(-65%); }
+}
+
+.animate-marquee {
+  display: inline-flex;
+  animation: marquee 35s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+.font-display {
+  font-family: var(--font-display), 'Space Grotesk', system-ui, sans-serif;
+}
+
+.font-sans {
+  font-family: var(--font-sans), 'DM Sans', system-ui, sans-serif;
+}
+
+/* Custom scroll reveal simulation definitions */
+.reveal-on-scroll {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.reveal-on-scroll.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
