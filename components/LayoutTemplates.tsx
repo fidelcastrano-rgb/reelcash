@@ -489,12 +489,20 @@ export function OrderBuilder() {
               <span className="font-bold text-white font-mono text-sm">${totalCost} USD</span>
             </div>
 
+            <Link
+              href="/checkout"
+              onClick={() => setIsOpen(false)}
+              className="w-full py-3.5 bg-emerald-500 hover:bg-emerald-400 text-black text-[11px] font-bold tracking-widest uppercase rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg shadow-emerald-500/10 font-sans text-center cursor-pointer"
+            >
+              <span>Proceed to Checkout</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+
             <button
               onClick={() => setStep(2)}
-              className="w-full py-3.5 bg-emerald-500 hover:bg-emerald-400 text-black text-[11px] font-bold tracking-widest uppercase rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg shadow-emerald-500/5 font-sans"
+              className="w-full py-2 bg-transparent hover:bg-slate-805/40 text-slate-400 hover:text-white text-[9.5px] font-mono font-bold tracking-wider uppercase border border-slate-850 rounded-xl transition-colors cursor-pointer"
             >
-              <span>Setup Courier Coordinates</span>
-              <ArrowRight className="w-4 h-4" />
+              Quick Chat Dispatch Alternative
             </button>
           </div>
         )}
