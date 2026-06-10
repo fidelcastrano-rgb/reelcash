@@ -89,7 +89,7 @@ export function Navbar() {
           {/* Navigation links - Bento layout style (slate text) */}
           <nav className="hidden md:flex items-center gap-8">
             {navItems.map((item) => {
-              const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
+              const isActive = pathname === item.href || (pathname?.startsWith(item.href + '/') ?? false);
               return (
                 <Link
                   key={item.name}
