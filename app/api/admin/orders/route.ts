@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { fetchOrdersFromD1, updateOrderStatusInD1 } from '@/lib/db';
 
-export const runtime = 'edge';
-
 // GET orders list (with optional query parameters for search/status)
 export async function GET(req: NextRequest) {
   try {
