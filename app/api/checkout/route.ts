@@ -82,7 +82,9 @@ export async function POST(req: NextRequest) {
       paymentMethod,
       country,
       items,
-      honeypot // spam protection honeypot
+      honeypot, // spam protection honeypot
+      shippingCost,
+      shippingOption
     } = body;
 
     // --- 2. Honeypot Protection ---
@@ -116,7 +118,9 @@ export async function POST(req: NextRequest) {
     }
 
     // Calculate sum totals
-    const totalAmount = items.reduce((sum: number, item: any) => sum + (Number(item.price) * Number(item.qty)), 0);
+    const itemTotal = items.reduce((sum: number, item: any) => sum + (Number(item.price) * Number(item.qty)), 0);
+    const shipCost = Number(shippingCost || 0);
+    const totalAmount = itemTotal + shipCost;
     if (totalAmount <= 0) {
       return NextResponse.json({ error: 'Invalid order total sum.' }, { status: 400 });
     }
@@ -128,8 +132,8 @@ export async function POST(req: NextRequest) {
     const orderId = crypto.randomUUID();
     const createdAt = new Date().toISOString();
 
-    // Append Payment Method and Destination Country to order notes for direct dashboard visibility
-    const notesHeading = `[Payment Option: ${paymentMethod || 'Not Selected'}] [Region Group: ${country || 'International'}]`;
+    // Append Payment Method, Destination Country, and Shipping choice to order notes for direct dashboard visibility
+    const notesHeading = `[Payment Option: ${paymentMethod || 'Not Selected'}] [Region Group: ${country || 'International'}] [Shipping: ${shippingOption || 'Normal'}]`;
     const formattedNotes = orderNotes && orderNotes.trim() !== '' 
       ? `${notesHeading}\n---\nNotes:\n${orderNotes.trim()}`
       : notesHeading;
@@ -215,8 +219,16 @@ export async function POST(req: NextRequest) {
               <tbody>
                 ${productsHtmlList}
                 <tr>
-                  <td colspan="2" style="padding: 12px 8px; font-weight: bold; text-align: right;">Total Amount:</td>
-                  <td style="padding: 12px 8px; font-weight: bold; text-align: right; color: #10b981; font-size: 16px;">$${totalAmount} USD</td>
+                  <td colspan="2" style="padding: 8px; text-align: right; color: #666; font-size: 13px;">Items Subtotal:</td>
+                  <td style="padding: 8px; text-align: right; color: #333; font-size: 13px;">$${itemTotal} USD</td>
+                </tr>
+                <tr>
+                  <td colspan="2" style="padding: 8px; text-align: right; color: #666; font-size: 13px;">Shipping (${shippingOption || 'Normal'}):</td>
+                  <td style="padding: 8px; text-align: right; color: #333; font-size: 13px;">$${shipCost} USD</td>
+                </tr>
+                <tr>
+                  <td colspan="2" style="padding: 12px 8px; font-weight: bold; text-align: right; border-top: 1px solid #eee;">Total Amount:</td>
+                  <td style="padding: 12px 8px; font-weight: bold; text-align: right; color: #10b981; font-size: 16px; border-top: 1px solid #eee;">$${totalAmount} USD</td>
                 </tr>
               </tbody>
             </table>
@@ -258,6 +270,18 @@ export async function POST(req: NextRequest) {
               </thead>
               <tbody>
                 ${productsHtmlList}
+                <tr>
+                  <td colspan="2" style="padding: 8px; text-align: right; color: #666; font-size: 13px;">Items Subtotal:</td>
+                  <td style="padding: 8px; text-align: right; color: #333; font-size: 13px;">$${itemTotal} USD</td>
+                </tr>
+                <tr>
+                  <td colspan="2" style="padding: 8px; text-align: right; color: #666; font-size: 13px;">Shipping (${shippingOption || 'Normal'}):</td>
+                  <td style="padding: 8px; text-align: right; color: #333; font-size: 13px;">$${shipCost} USD</td>
+                </tr>
+                <tr>
+                  <td colspan="2" style="padding: 12px 8px; font-weight: bold; text-align: right; border-top: 1px solid #eee;">Total Amount:</td>
+                  <td style="padding: 12px 8px; font-weight: bold; text-align: right; color: #10b981; font-size: 16px; border-top: 1px solid #eee;">$${totalAmount} USD</td>
+                </tr>
               </tbody>
             </table>
 

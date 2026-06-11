@@ -333,8 +333,8 @@ export function OrderBuilder() {
 
   // Rules enforcement
   const isCryptoEligible = true;
-  const isBankEligible = totalCost > 150 && ['Australia', 'United Kingdom (UK)', 'Europe (EU)'].includes(shippingCountry);
-  const isCardEligible = totalCost >= 200;
+  const isBankEligible = ['Australia', 'United Kingdom (UK)', 'Europe (EU)', 'United Kingdom', 'Ireland'].includes(shippingCountry);
+  const isCardEligible = true;
 
   if (items.length === 0 || !isOpen) return null;
 
@@ -774,7 +774,7 @@ export function OrderBuilder() {
                         )}
                       </h5>
                       <p className="text-[10px] text-slate-400 leading-normal mt-0.5">
-                        AU, Europe &amp; UK Wire Transfers. (Minimum order $150).
+                        AU, Europe &amp; UK Wire Transfers. (Discrete and secure).
                       </p>
                     </div>
                   </div>
@@ -798,9 +798,7 @@ export function OrderBuilder() {
                   <div className="mt-2 text-[9px] font-mono text-[#c59b27] border-t border-slate-800/40 pt-2 flex items-center gap-1 leading-none uppercase">
                     <Info className="w-3.5 h-3.5 text-[#c59b27]" />
                     <span>
-                      {totalCost <= 150 
-                        ? 'Requires Order Total > $150 USD' 
-                        : `Not Available in ${shippingCountry}`}
+                      {`Not Available in ${shippingCountry}`}
                     </span>
                   </div>
                 )}

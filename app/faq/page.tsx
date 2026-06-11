@@ -64,7 +64,7 @@ export default function FAQPage() {
       id: 'price-1',
       category: 'pricing',
       q: "Are there any wholesale or production studio pricing discounts?",
-      a: "Absolutely. Our base rates start at $75 for a starter pack of 50 banknotes. However, our high-volume Studio Vault Pack (500 notes) drops the cost of each replication block by over 50%. Free courier dispatch is applied automatically on select packages."
+      a: "Absolutely. Our base rates start at $100 for a starter bundle. Higher-volume packages like our Director Platinum Pack drop the ultimate replication unit costs by over 50%. Standard secure courier tracking is applied automatically to your dispatch order."
     },
     {
       id: "price-2",

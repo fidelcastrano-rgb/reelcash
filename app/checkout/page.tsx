@@ -155,6 +155,21 @@ export default function CheckoutPage() {
   const [country, setCountry] = useState('US');
   const [selectedPayment, setSelectedPayment] = useState('crypto');
 
+  // Shipping states
+  const [shippingOption, setShippingOption] = useState<'normal' | 'international' | 'sameday'>('normal');
+
+  const getShippingCost = () => {
+    if (shippingOption === 'sameday') return 40;
+    if (shippingOption === 'international') return 30;
+    return 20;
+  };
+
+  const getShippingName = () => {
+    if (shippingOption === 'sameday') return 'Same Day Shipping';
+    if (shippingOption === 'international') return 'International Shipping (7-14 days)';
+    return 'Normal Shipping (3-5 days)';
+  };
+
   // Form feedback states
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -163,6 +178,12 @@ export default function CheckoutPage() {
   const handleCountryChange = (countryCode: string) => {
     setCountry(countryCode);
     setSelectedPayment('crypto'); // Default to crypto as preferred/discreet!
+    
+    // Auto shift shipping option if ineligible
+    const isSDEligible = ['US', 'CA', 'AU', 'UK', 'IE'].includes(countryCode);
+    if (!isSDEligible && shippingOption === 'sameday') {
+      setShippingOption('normal');
+    }
   };
 
   // Submit handler
@@ -210,7 +231,9 @@ export default function CheckoutPage() {
           items,
           honeypot, // Spam honeypot
           paymentMethod: paymentDetails[selectedPayment]?.name || selectedPayment,
-          country: country === 'US' ? 'United States' : country === 'CA' ? 'Canada' : country === 'AU' ? 'Australia' : 'International',
+          country: country === 'US' ? 'United States' : country === 'CA' ? 'Canada' : country === 'AU' ? 'Australia' : country === 'UK' ? 'United Kingdom' : country === 'IE' ? 'Ireland' : 'International',
+          shippingCost: getShippingCost(),
+          shippingOption: getShippingName(),
         }),
       });
 
@@ -343,11 +366,13 @@ export default function CheckoutPage() {
                   <label className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-widest">
                     Country / Region
                   </label>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                     {[
                       { code: 'US', name: 'United States', flag: '🇺🇸' },
                       { code: 'CA', name: 'Canada', flag: '🇨🇦' },
                       { code: 'AU', name: 'Australia', flag: '🇦🇺' },
+                      { code: 'UK', name: 'United Kingdom', flag: '🇬🇧' },
+                      { code: 'IE', name: 'Ireland', flag: '🇮🇪' },
                       { code: 'OTHER', name: 'International', flag: '🌐' },
                     ].map((item) => (
                       <button
@@ -443,6 +468,62 @@ export default function CheckoutPage() {
                   <span className="text-[9px] font-mono text-slate-500 leading-none">
                     Unbranded plain bubble packages are posted safely. Zero reference keys to inside banknotes.
                   </span>
+                </div>
+
+                {/* Shipping Method Selector */}
+                <div className="space-y-3 pt-2">
+                  <label className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-widest block">
+                    3. Choose Secure Courier Speed Selection
+                  </label>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    {[
+                      { id: 'normal', name: 'Normal Shipping', desc: 'Dispatched in 3-5 days', cost: 20, eligible: true },
+                      { id: 'international', name: 'International', desc: 'Dispatched in 7-14 days', cost: 30, eligible: true },
+                      { 
+                        id: 'sameday', 
+                        name: 'Same Day Shipping', 
+                        desc: 'Dispatched immediately', 
+                        cost: 40, 
+                        eligible: ['US', 'CA', 'AU', 'UK', 'IE'].includes(country),
+                        disabledDesc: 'Unsupported in'
+                      },
+                    ].map((opt) => {
+                      const isOptionEligible = opt.eligible;
+                      return (
+                        <button
+                          key={opt.id}
+                          type="button"
+                          disabled={!isOptionEligible}
+                          onClick={() => setShippingOption(opt.id as any)}
+                          className={`p-3.5 rounded-xl border text-left flex flex-col justify-between transition-all duration-200 relative cursor-pointer ${
+                            !isOptionEligible
+                              ? 'bg-black/10 border-slate-900 opacity-40 cursor-not-allowed'
+                              : shippingOption === opt.id
+                              ? 'bg-emerald-500/10 border-emerald-500 text-white shadow-lg shadow-emerald-500/5'
+                              : 'bg-[#070908] border-slate-850 text-slate-400 hover:border-slate-700 hover:text-white'
+                          }`}
+                        >
+                          <div className="flex justify-between items-center w-full mb-1">
+                            <span className={`font-bold text-xs font-mono ${!isOptionEligible ? 'text-slate-600' : 'text-white'}`}>{opt.name}</span>
+                            <span className={`text-[11px] font-mono font-extrabold ${!isOptionEligible ? 'text-slate-600' : shippingOption === opt.id ? 'text-emerald-400' : 'text-slate-300'}`}>
+                              ${opt.cost}
+                            </span>
+                          </div>
+                          <span className="text-[10px] text-slate-500 font-sans leading-none mt-1">
+                            {isOptionEligible ? opt.desc : `${opt.disabledDesc} ${country}`}
+                          </span>
+                          {shippingOption === opt.id && isOptionEligible && (
+                            <div className="absolute top-1 right-1 w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {country && !['US', 'CA', 'AU', 'UK', 'IE'].includes(country) && (
+                    <p className="text-[9.5px] font-mono text-amber-500/80 flex items-center gap-1.5 pt-0.5">
+                      <Info className="w-3.5 h-3.5 flex-shrink-0 text-amber-500" /> Note: Same Day shipping is only available for Australia, US, Canada, UK, and Ireland.
+                    </p>
+                  )}
                 </div>
 
                 {/* Order Notes */}
@@ -633,8 +714,14 @@ export default function CheckoutPage() {
                 {/* Sub totals */}
                 <div className="space-y-2 pt-2 border-t border-slate-800 text-xs font-sans text-slate-400">
                   <div className="flex justify-between">
-                    <span>Shipping Handlers:</span>
-                    <span className="text-green-400 font-mono font-extrabold uppercase">Free (Discreet Courier)</span>
+                    <span>Items Subtotal:</span>
+                    <span className="font-mono text-slate-350 font-extrabold">${totalCost} USD</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Secure Courier (Shipping):</span>
+                    <span className="text-emerald-400 font-mono font-bold uppercase">
+                      {getShippingName()} (${getShippingCost()})
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span>Tax Integration:</span>
@@ -642,7 +729,7 @@ export default function CheckoutPage() {
                   </div>
                   <div className="flex justify-between items-center text-sm text-white pt-3 border-t border-slate-800/60 select-all font-mono font-extrabold">
                     <span>Grand Total:</span>
-                    <span className="text-emerald-500 font-bold text-base">${totalCost} USD</span>
+                    <span className="text-emerald-500 font-bold text-base">${totalCost + getShippingCost()} USD</span>
                   </div>
                 </div>
 

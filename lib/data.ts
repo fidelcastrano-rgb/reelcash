@@ -36,7 +36,7 @@ export interface BlogPost {
   keywords: string[];
 }
 
-export const PRODUCTS: Product[] = [
+const RAW_PRODUCTS: Product[] = [
   {
     "slug": "buy-counterfeit-aud-10-dollar-banknotes",
     "id": "aud-10",
@@ -1382,9 +1382,39 @@ export const PRODUCTS: Product[] = [
   }
 ];
 
+export const PRODUCTS: Product[] = RAW_PRODUCTS.map(product => {
+  const denomStr = product.id.split('-')[1];
+  const denom = parseInt(denomStr, 10) || 100;
+  const currencyCode = product.id.split('-')[0].toLowerCase();
+  const symbol = currencyCode === 'gbp' ? '£' : currencyCode === 'eur' ? '€' : '$';
 
+  const pricePoints = [
+    { price: 100, originalPrice: 150, name: "Starter Bundle", savings: "Save 33%" },
+    { price: 200, originalPrice: 290, name: "Compact Bundle", savings: "Save 31%" },
+    { price: 500, originalPrice: 650, name: "Premium Bundle", savings: "Save 23%" },
+    { price: 1000, originalPrice: 1500, name: "Production Bundle", savings: "Save 33%" },
+    { price: 2000, originalPrice: 3200, name: "Studio Vault Pack", savings: "Save 38%" },
+    { price: 5000, originalPrice: 9500, name: "Director Platinum Pack", savings: "Save 47%" },
+  ];
 
+  const variants = pricePoints.map((item) => {
+    const qty = Math.max(1, Math.round((item.price * 10) / denom));
+    const faceValueStr = symbol + (item.price * 10).toLocaleString();
+    return {
+      name: `${faceValueStr} ${item.name} (${qty.toLocaleString()} Notes)`,
+      quantity: qty,
+      price: item.price,
+      originalPrice: item.originalPrice,
+      savings: item.savings,
+    };
+  });
 
+  return {
+    ...product,
+    basePrice: 100,
+    variants,
+  };
+});
 
 export const BLOG_POSTS: BlogPost[] = [
   {
