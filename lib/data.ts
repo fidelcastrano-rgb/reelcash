@@ -1477,7 +1477,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "readTime": "7 min read",
     "excerpt": "Optimize texture output and avoid visual camera flaws. A comprehensive overview of international standards regarding prop, replica, and training money physical textures.",
     "content": "### Calibrated Camera Layouts and Surface Reflection\n\nUsing replica or prop banknotes in film, television, theatre, or educational simulations is globally accepted. However, camera systems enforce tight criteria to prevent visual glare. Here is how to keep your filming set looking perfect.\n\n#### The Illustrative Physics\nIn high-definition photography, the lens captures fine texture details closely. Under engineering standards:\n1. **Surface Reflection**: Prominent matte surface sealers must absorb illumination to stay realistic on camera.\n2. **Density Parameters**: Customized cotton-linen fiber compositions are heavily recommended to ensure genuine count and flex.\n3. **Spectral Profiling**: Prop notes must keep non-reflective traits under ultraviolet studio bulbs.\n\nAt Reel Cash and Currency, we design every asset from the ground up with embedded differences that satisfy high-fidelity studio sensors instantly, while keeping the notes looking breathtakingly real in wide shots.",
-    "image": "https://picsum.photos/seed/printing-press/800/400",
+    "image": "/images/tech_guidelines.png",
     "keywords": [
       "prop money texture",
       "replica notes calibration rules",
@@ -1493,7 +1493,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "readTime": "5 min read",
     "excerpt": "Step behind the curtain to see how modern special effects designers utilize, age, and destroy replica cash on high-budget movie sets.",
     "content": "### Slices of Cinema: Slicing and Dicing Dollar Stacks\n\nOn heavy cinematic productions like *Heat*, *Wolf of Wall Street*, or *John Wick*, briefcase fillings and heist vaults represent key visual landmarks. How do special effects designers handle this volume safely?\n\n#### The \"Sandwich\" Strategy\nWhen a scene requires vast briefcases stuffed with $1,000,000 in cash, budgets are managed with the \"sandwich\" approach. \n* Only the top and bottom notes of each bank stack are premium high-grade replicas.\n* The interior of the stack consists of blank colored blocks cut to exact size.\nThis saves significant costs while maintaining the illusion of immense wealth.\n\n#### Safe Special Effects Treatment (Aging Cash)\nTo make crisp new prop notes look like weathered, street-circulated dollars, prop masters use specialized techniques:\n* **Tea Washing**: Steeping notes in warm black tea and drying them quickly to give a natural brownish tint.\n* **Tumble Cycle**: Aggressive dry tumbling with abrasive stones to naturally soften the paper fibers.\n\nWe offer custom aged versions of our main products for direct premium orders!",
-    "image": "https://picsum.photos/seed/cine-camera/800/400",
+    "image": "/images/hollywood_set.png",
     "keywords": [
       "hollywood prop money",
       "movie special effects cash",
@@ -1509,7 +1509,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "readTime": "6 min read",
     "excerpt": "Tellers, bank trainees, and cash handling systems require real weight and feedback. See why training centers rely on authentic paper assets.",
     "content": "### High Fidelity Assets for Educational Excellence\n\nFinancial training centers, retail establishments, and courier organizations must prepare their staff for live, high-stress currency counting and security operations. \n\n#### Realistic Tactile Practice\nUsing thin or standard paper results in trainees developing poor muscle memory. Professional training notes, such as our USD replicas, provide the exact thickness (approx. 110 microns) and friction coefficients of security banknotes, letting cash handling machines and staff count without sticking errors.\n\n#### Risk Mitigation\nCarrying large sums of actual cash at teaching centers is a major security risk. High-quality replica banknotes eliminate internal loss threats entirely while keeping simulation workshops realistic.",
-    "image": "https://picsum.photos/seed/cash-stack/800/400",
+    "image": "/images/training_center.png",
     "keywords": [
       "bank teller training bills",
       "educational currency",
@@ -1541,7 +1541,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "readTime": "8 min read",
     "excerpt": "Delve into the fascinating century-long history of cinema cash, from early physical tokens to modern 3D laser-stamped replica assets.",
     "content": "### A Century of Fictional Wealth on screen\n\nIn early Hollywood, actual currency was frequently used in outdoor shoots, which led to high theft risks and legal disputes with treasury agents.\n\n#### The Famous Mexican Revolution Notes\nDuring early 1900s productions, Mexican revolutionary money was frequently bought as prop money due to its incredibly low value at the time.\n\n#### Modern Statutory Rules\nFollowing the creation of the Secret Service, specialized printing firms emerged to manufacture lawful \"Play Money\" and \"Motion Picture Money,\" starting a new standard of visual craftsmanship that continues to scale today.",
-    "image": "https://picsum.photos/seed/vintage-cash/800/400",
+    "image": "/images/vintage_hollywood.png",
     "keywords": [
       "cinema history prop money",
       "old hollywood replicas",
@@ -1557,7 +1557,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "readTime": "4 min read",
     "excerpt": "Unboxing confidence. Learn how our vacuum-sealed, unmarked deliveries protect your production budget and personal security.",
     "content": "### Safe Transit for Crucial Film Assets\n\nSourcing custom artistic materials for theatrical performances or cinematic endeavors requires absolute reliability. \n\n#### Vacuum Sealing Protection\nHumidity is the ultimate enemy of fine-crafted paper assets. We dry and vacuum-seal each custom brick before placing them inside sturdy cardboard containers.\n\n#### Unmarked Outer Mailers\nOur packages carry completely generic, nondescript labels with zero reference to currency, cash, or replica assets. This protects your delivery from visual theft and parcel sorting delays.",
-    "image": "https://picsum.photos/seed/secure-shipping/800/400",
+    "image": "/images/secure_dispatch.png",
     "keywords": [
       "discreet delivery movie prop",
       "secure prop shipping",
