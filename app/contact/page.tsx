@@ -28,7 +28,7 @@ export default function ContactPage() {
   const orderFlowSteps = [
     { num: '1', title: 'Assemble Draft', desc: 'Select banknote quantities and variant formats on our product catalog and click "Add to Order".' },
     { num: '2', title: 'Transmit Summary', desc: 'Click "WhatsApp Order" or "Email Order" to transmit your formatted invoice details instantly.' },
-    { num: '3', title: 'Configure Payment', desc: 'Our specialist will confirm the payment routing via encryption blocks on WhatsApp or Email.' },
+    { num: '3', title: 'Configure Payment', desc: 'Confirm payment routing on secure platforms. Cryptocurrency is preferred and recommended for 100% discreet ordering.' },
     { num: '4', title: 'Secure Dispatch', desc: 'Your bricks are vacuum packet-sealed and dispatched within 24 hours with an encrypted tracking log.' }
   ];
 

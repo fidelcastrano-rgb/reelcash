@@ -50,7 +50,7 @@ export default function FAQPage() {
       id: "buy-2",
       category: "buying",
       q: "What payment systems do you accept?",
-      a: "To protect client identity, we accept secure vouchers, digital store codes, and cryptographic assets (BTC, USDT). Once our support desks confirm your summary, a temporary instruction token is generated."
+      a: "Cryptocurrency (USDT, BTC, USDC, ETH) is our highly integrated, preferred, and best payment option for 100% discreet ordering with zero paper trails. For convenience, we also support localized options depending on your country: Zelle, Chime, and Apple Cash in the United States; Interac E-Transfer in Canada; secure local Bank Transfers inside Australia, Europe, and the UK; as well as international Credit Cards worldwide."
     },
     {
       id: "buy-3",

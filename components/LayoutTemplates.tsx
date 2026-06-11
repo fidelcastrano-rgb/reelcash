@@ -322,8 +322,8 @@ export function OrderBuilder() {
   const [shippingZip, setShippingZip] = useState('');
   const [shippingCountry, setShippingCountry] = useState('United States');
   
-  const [paymentMethod, setPaymentMethod] = useState<'crypto' | 'bank' | 'card' | ''>('');
-  const [cryptoType, setCryptoType] = useState<'Bitcoin' | 'USDT' | 'USDC' | 'Ether' | ''>('');
+  const [paymentMethod, setPaymentMethod] = useState<'crypto' | 'bank' | 'card' | ''>('crypto');
+  const [cryptoType, setCryptoType] = useState<'Bitcoin' | 'USDT' | 'USDC' | 'Ether' | ''>('USDT');
   
   // Card inputs
   const [cardNumber, setCardNumber] = useState('');
@@ -636,14 +636,8 @@ export function OrderBuilder() {
               <button
                 disabled={!isShippingValid}
                 onClick={() => {
-                  if (totalCost < 100) {
+                  if (!paymentMethod) {
                     setPaymentMethod('crypto');
-                  } else {
-                    if (paymentMethod === 'bank' && !isBankEligible) {
-                      setPaymentMethod('');
-                    } else if (paymentMethod === 'card' && !isCardEligible) {
-                      setPaymentMethod('');
-                    }
                   }
                   setStep(3);
                 }}
@@ -707,14 +701,14 @@ export function OrderBuilder() {
                       <Coins className="w-4 h-4" />
                     </div>
                     <div>
-                      <h5 className="font-bold text-white flex items-center gap-1.5">
+                      <h5 className="font-bold text-white flex items-center gap-1.5 flex-wrap">
                         Crypto Wallet
-                        <span className="text-[8px] bg-emerald-950 text-emerald-400 border border-emerald-500/30 font-mono font-bold tracking-widest px-1.5 py-0.25 rounded-md uppercase">
-                          DISCREET ★
+                        <span className="text-[8px] bg-amber-500/10 text-amber-400 border border-amber-550/30 font-mono font-bold tracking-widest px-1.5 py-0.25 rounded-md uppercase animate-pulse">
+                          ★ RECOMMENDED - BEST DISCREET OPTION
                         </span>
                       </h5>
                       <p className="text-[10px] text-slate-400 leading-normal mt-0.5">
-                        Btc, Usdt Ethereum, Usdc. Purely discreet settlement.
+                        Btc, Usdt, Ethereum, Usdc. 100% anonymous, fast, zero paper trails - our preferred &amp; best choice.
                       </p>
                     </div>
                   </div>

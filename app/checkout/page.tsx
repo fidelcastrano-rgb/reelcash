@@ -41,7 +41,7 @@ const paymentDetails: Record<string, { name: string; notice: string }> = {
   },
   crypto: {
     name: 'Crypto (Bitcoin, USDT, USDC, Ether)',
-    notice: 'Crypto wallet addresses (BTC, USDT-TRC20, USDC, ETH) will be sent to your email or whatsapp once we receive your order.',
+    notice: '★ RECOMMENDED FOR 100% DISCREET ORDERING & MAXIMUM SECURITY. Crypto wallet addresses (BTC, USDT-TRC20, USDC, ETH) will be sent to your email or whatsapp once we receive your order. Highly secure, immediate verification, and leaves no digital audit trails on your banking cards.',
   },
   credit_card: {
     name: 'Credit Card',
@@ -153,7 +153,7 @@ export default function CheckoutPage() {
   const [honeypot, setHoneypot] = useState(''); // Spam protection honeypot
 
   const [country, setCountry] = useState('US');
-  const [selectedPayment, setSelectedPayment] = useState('zelle');
+  const [selectedPayment, setSelectedPayment] = useState('crypto');
 
   // Form feedback states
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -162,13 +162,7 @@ export default function CheckoutPage() {
 
   const handleCountryChange = (countryCode: string) => {
     setCountry(countryCode);
-    if (countryCode === 'US') {
-      setSelectedPayment('zelle');
-    } else if (countryCode === 'CA') {
-      setSelectedPayment('e_transfer');
-    } else {
-      setSelectedPayment('bank_transfer');
-    }
+    setSelectedPayment('crypto'); // Default to crypto as preferred/discreet!
   };
 
   // Submit handler
@@ -216,7 +210,7 @@ export default function CheckoutPage() {
           items,
           honeypot, // Spam honeypot
           paymentMethod: paymentDetails[selectedPayment]?.name || selectedPayment,
-          country: country === 'US' ? 'United States' : country === 'CA' ? 'Canada' : 'International',
+          country: country === 'US' ? 'United States' : country === 'CA' ? 'Canada' : country === 'AU' ? 'Australia' : 'International',
         }),
       });
 
@@ -349,10 +343,11 @@ export default function CheckoutPage() {
                   <label className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-widest">
                     Country / Region
                   </label>
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                     {[
                       { code: 'US', name: 'United States', flag: '🇺🇸' },
                       { code: 'CA', name: 'Canada', flag: '🇨🇦' },
+                      { code: 'AU', name: 'Australia', flag: '🇦🇺' },
                       { code: 'OTHER', name: 'International', flag: '🌐' },
                     ].map((item) => (
                       <button
@@ -477,83 +472,47 @@ export default function CheckoutPage() {
                   </label>
                   
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {country === 'US' && (
-                      <>
-                        {['zelle', 'apple_cash', 'chime', 'credit_card'].map((methodId) => (
-                          <button
-                            key={methodId}
-                            type="button"
-                            onClick={() => setSelectedPayment(methodId)}
-                            className={`p-4 rounded-xl border text-left flex items-center justify-between transition-all duration-200 cursor-pointer relative ${
-                              selectedPayment === methodId
-                                ? 'bg-emerald-500/10 border-emerald-500 text-white shadow-lg shadow-emerald-500/5'
-                                : 'bg-[#070908] border-slate-850 text-slate-400 hover:border-slate-700'
-                            }`}
-                          >
-                            {getPaymentLogo(methodId)}
-                            <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${
-                              selectedPayment === methodId ? 'border-emerald-500 bg-emerald-500' : 'border-slate-600'
-                            }`}>
-                              {selectedPayment === methodId && (
-                                <div className="w-1.5 h-1.5 rounded-full bg-black" />
-                              )}
-                            </div>
-                          </button>
-                        ))}
-                      </>
-                    )}
+                    {(() => {
+                      let methods: string[] = [];
+                      if (country === 'US') {
+                        methods = ['crypto', 'zelle', 'apple_cash', 'chime', 'credit_card'];
+                      } else if (country === 'CA') {
+                        methods = ['crypto', 'e_transfer', 'credit_card'];
+                      } else if (country === 'AU') {
+                        methods = ['crypto', 'bank_transfer', 'credit_card'];
+                      } else {
+                        methods = ['crypto', 'bank_transfer', 'credit_card'];
+                      }
 
-                    {country === 'CA' && (
-                      <>
-                        {['e_transfer', 'credit_card'].map((methodId) => (
-                          <button
-                            key={methodId}
-                            type="button"
-                            onClick={() => setSelectedPayment(methodId)}
-                            className={`p-4 rounded-xl border text-left flex items-center justify-between transition-all duration-200 cursor-pointer relative ${
-                              selectedPayment === methodId
-                                ? 'bg-emerald-500/10 border-emerald-500 text-white shadow-lg shadow-emerald-500/5'
-                                : 'bg-[#070908] border-slate-850 text-slate-400 hover:border-slate-700'
-                            }`}
-                          >
+                      return methods.map((methodId) => (
+                        <button
+                          key={methodId}
+                          type="button"
+                          onClick={() => setSelectedPayment(methodId)}
+                          className={`p-4 rounded-xl border text-left flex items-center justify-between transition-all duration-200 cursor-pointer relative ${
+                            selectedPayment === methodId
+                              ? 'bg-emerald-500/10 border-emerald-500 text-white shadow-lg shadow-emerald-500/5'
+                              : 'bg-[#070908] border-slate-850 text-slate-400 hover:border-slate-700'
+                          } ${methodId === 'crypto' ? 'border-amber-500/30' : ''}`}
+                        >
+                          <div className="flex items-center gap-2">
                             {getPaymentLogo(methodId)}
-                            <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${
-                              selectedPayment === methodId ? 'border-emerald-500 bg-emerald-500' : 'border-slate-600'
-                            }`}>
-                              {selectedPayment === methodId && (
-                                <div className="w-1.5 h-1.5 rounded-full bg-black" />
-                              )}
-                            </div>
-                          </button>
-                        ))}
-                      </>
-                    )}
-
-                    {country === 'OTHER' && (
-                      <>
-                        {['bank_transfer', 'crypto', 'credit_card'].map((methodId) => (
-                          <button
-                            key={methodId}
-                            type="button"
-                            onClick={() => setSelectedPayment(methodId)}
-                            className={`p-4 rounded-xl border text-left flex items-center justify-between transition-all duration-200 cursor-pointer relative ${
-                              selectedPayment === methodId
-                                ? 'bg-emerald-500/10 border-emerald-500 text-white shadow-lg shadow-emerald-500/5'
-                                : 'bg-[#070908] border-slate-850 text-slate-400 hover:border-slate-700'
-                            }`}
-                          >
-                            {getPaymentLogo(methodId)}
-                            <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${
-                              selectedPayment === methodId ? 'border-emerald-500 bg-emerald-500' : 'border-slate-600'
-                            }`}>
-                              {selectedPayment === methodId && (
-                                <div className="w-1.5 h-1.5 rounded-full bg-black" />
-                              )}
-                            </div>
-                          </button>
-                        ))}
-                      </>
-                    )}
+                            {methodId === 'crypto' && (
+                              <span className="bg-amber-500/10 text-amber-400 text-[8px] font-mono px-1.5 py-0.5 rounded font-extrabold flex items-center gap-0.5 animate-pulse uppercase tracking-wider">
+                                ★ Best Discreet Option
+                              </span>
+                            )}
+                          </div>
+                          <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${
+                            selectedPayment === methodId ? 'border-emerald-500 bg-emerald-500' : 'border-slate-600'
+                          }`}>
+                            {selectedPayment === methodId && (
+                              <div className="w-1.5 h-1.5 rounded-full bg-black" />
+                            )}
+                          </div>
+                        </button>
+                      ));
+                    })()}
                   </div>
 
                   {/* Dynamic Settlement Instructions Notice Box */}
