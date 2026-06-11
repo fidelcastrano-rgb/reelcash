@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { saveOrderToD1, DBOrder, DBOrderItem } from '@/lib/db';
 
+export const dynamic = 'force-dynamic';
+
 // Memory cache for simple edge rate limiting
 const ipRequestLog: Record<string, { count: number; windowStart: number }> = {};
 const RATE_LIMIT_WINDOW_MS = 60000; // 1 minute
