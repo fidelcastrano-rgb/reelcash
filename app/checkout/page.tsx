@@ -18,6 +18,128 @@ import {
 import { useOrder } from '@/context/OrderContext';
 import { Breadcrumbs } from '@/components/LayoutTemplates';
 
+const paymentDetails: Record<string, { name: string; notice: string }> = {
+  zelle: {
+    name: 'Zelle',
+    notice: 'This payment option will be emailed or whatsapp to you once we recieve your order',
+  },
+  apple_cash: {
+    name: 'Apple Cash',
+    notice: 'This payment option will be emailed or whatsapp to you once we recieve your order',
+  },
+  chime: {
+    name: 'Chime',
+    notice: 'This payment option will be emailed or whatsapp to you once we recieve your order',
+  },
+  e_transfer: {
+    name: 'Interac E-Transfer',
+    notice: 'Our Interac E-Transfer request will be emailed or whatsapp to you once we receive your order.',
+  },
+  bank_transfer: {
+    name: 'Bank Transfer',
+    notice: 'Our bank account coordinates will be emailed or whatsapp to you once we receive your order.',
+  },
+  crypto: {
+    name: 'Crypto (Bitcoin, USDT, USDC, Ether)',
+    notice: 'Crypto wallet addresses (BTC, USDT-TRC20, USDC, ETH) will be sent to your email or whatsapp once we receive your order.',
+  },
+  credit_card: {
+    name: 'Credit Card',
+    notice: 'Our card payment link will be emailed or whatsapp to you once we recieve your order.',
+  },
+};
+
+function getPaymentLogo(id: string) {
+  switch (id) {
+    case 'zelle':
+      return (
+        <div className="flex items-center gap-2">
+          <div className="w-7 h-7 rounded-full bg-[#7414CA] flex items-center justify-center shadow">
+            <span className="font-extrabold text-[#fff] text-xs select-none">z</span>
+          </div>
+          <span className="font-bold text-xs tracking-tight text-[#aa75ff] font-mono">Zelle</span>
+        </div>
+      );
+    case 'apple_cash':
+      return (
+        <div className="flex items-center gap-2">
+          <div className="w-7 h-7 rounded-full bg-white flex items-center justify-center shadow">
+            <svg viewBox="0 0 32 32" className="w-4 h-4 text-black" fill="currentColor">
+              <path d="M16 .5C7.4.5.5 7.4.5 16s6.9 15.5 15.5 15.5 15.5-6.9 15.5-15.5S24.6.5 16.5.5zm5.5 17.5c-.1 2-1.6 3.4-3.5 3.5-1 0-1.8-.4-2.5-.4s-1.5.4-2.5.4c-2.4 0-4.4-1.9-4.5-4.4v-.1c-.1-2.5 1.8-4.5 4.3-4.6 1 0 1.8.4 2.5.4s1.5-.4 2.5-.4c1.8.1 3.2 1.3 3.6 3-1.6.7-2.6 2.3-2.6 4-.1 1.7.9 3.2 2.7 4.1zm-3-8c0-1.2.9-2.2 2.1-2.4.1 1.2-.9 2.2-2.1 2.4z"/>
+            </svg>
+          </div>
+          <span className="font-bold text-xs tracking-tight text-white font-mono">Apple Cash</span>
+        </div>
+      );
+    case 'chime':
+      return (
+        <div className="flex items-center gap-2">
+          <div className="w-7 h-7 rounded-lg bg-[#25C974] flex items-center justify-center font-black text-black text-[9px] font-mono">
+            ch
+          </div>
+          <span className="font-bold text-xs tracking-tight text-[#25C974] font-mono">Chime</span>
+        </div>
+      );
+    case 'e_transfer':
+      return (
+        <div className="flex items-center gap-2">
+          <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-[#FFB800] to-[#FF8A00] flex items-center justify-center">
+            <svg viewBox="0 0 24 24" className="w-4 h-4 text-black" fill="none" stroke="currentColor" strokeWidth="3">
+              <path d="M17 8l4 4m0 0l-4 4m4-4H3" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
+          <span className="font-bold text-xs tracking-tight text-white flex flex-col items-start leading-none font-mono">
+            <span>Interac</span>
+            <span className="text-[8px] text-amber-400 mt-0.5">e-Transfer</span>
+          </span>
+        </div>
+      );
+    case 'bank_transfer':
+      return (
+        <div className="flex items-center gap-2">
+          <div className="w-7 h-7 rounded-full bg-slate-800 flex items-center justify-center text-amber-500">
+            <svg viewBox="0 0 24 24" className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2">
+              <rect x="3" y="19" width="18" height="2" />
+              <path d="M5 19v-9M9 19v-9M15 19v-9M19 19v-9M3 10l9-7 9 7" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+          <span className="font-bold text-xs tracking-tight text-white font-mono">Bank Transfer</span>
+        </div>
+      );
+    case 'crypto':
+      return (
+        <div className="flex items-center gap-2">
+          <div className="flex -space-x-1">
+            <div className="w-6 h-6 rounded-full bg-[#f2a900] flex items-center justify-center text-[9px] font-bold text-white shadow">
+              ₿
+            </div>
+            <div className="w-6 h-6 rounded-full bg-[#26a17b] flex items-center justify-center text-[8px] font-bold text-white shadow">
+              ₮
+            </div>
+          </div>
+          <span className="font-bold text-xs tracking-tight text-white flex flex-col items-start leading-none font-mono">
+            <span>Crypto</span>
+            <span className="text-[8px] text-teal-400 mt-0.5">USDT/BTC/USDC</span>
+          </span>
+        </div>
+      );
+    case 'credit_card':
+      return (
+        <div className="flex items-center gap-2">
+          <div className="w-7 h-7 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400">
+            <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2">
+              <rect x="2" y="5" width="20" height="14" rx="2" />
+              <line x1="2" y1="10" x2="22" y2="10" />
+            </svg>
+          </div>
+          <span className="font-bold text-xs tracking-tight text-white font-mono">Credit Card</span>
+        </div>
+      );
+    default:
+      return null;
+  }
+}
+
 export default function CheckoutPage() {
   const { items, totalCost, totalQty, removeItem, clearOrder } = useOrder();
 
@@ -30,10 +152,24 @@ export default function CheckoutPage() {
   const [orderNotes, setOrderNotes] = useState('');
   const [honeypot, setHoneypot] = useState(''); // Spam protection honeypot
 
+  const [country, setCountry] = useState('US');
+  const [selectedPayment, setSelectedPayment] = useState('zelle');
+
   // Form feedback states
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successOrderNumber, setSuccessOrderNumber] = useState<string | null>(null);
+
+  const handleCountryChange = (countryCode: string) => {
+    setCountry(countryCode);
+    if (countryCode === 'US') {
+      setSelectedPayment('zelle');
+    } else if (countryCode === 'CA') {
+      setSelectedPayment('e_transfer');
+    } else {
+      setSelectedPayment('bank_transfer');
+    }
+  };
 
   // Submit handler
   const handleSubmit = async (e: React.FormEvent) => {
@@ -79,6 +215,8 @@ export default function CheckoutPage() {
           orderNotes,
           items,
           honeypot, // Spam honeypot
+          paymentMethod: paymentDetails[selectedPayment]?.name || selectedPayment,
+          country: country === 'US' ? 'United States' : country === 'CA' ? 'Canada' : 'International',
         }),
       });
 
@@ -198,12 +336,40 @@ export default function CheckoutPage() {
             
             {/* LEFT COLUMN: Customer Coordinates Form (7 cols) */}
             <div className="lg:col-span-7">
-              <form onSubmit={handleSubmit} className="bg-[#0f1311] border border-slate-800 rounded-2xl p-6 sm:p-8 space-y-6 text-left">
+              <form onSubmit={handleSubmit} className="bg-[#0f1311] border border-slate-800 rounded-2xl p-6 sm:p-8 space-y-6 text-left animate-fade-in">
                 
                 <div>
                   <h3 className="font-display font-medium text-sm text-white uppercase tracking-wider border-b border-slate-800 pb-3 flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-emerald-400" /> 1. Shipping Coordinates info
+                    <CheckCircle className="w-4 h-4 text-emerald-400" /> 1. Shipping Coordinates Info
                   </h3>
+                </div>
+
+                {/* Country Selection */}
+                <div className="flex flex-col gap-2">
+                  <label className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-widest">
+                    Country / Region
+                  </label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {[
+                      { code: 'US', name: 'United States', flag: '🇺🇸' },
+                      { code: 'CA', name: 'Canada', flag: '🇨🇦' },
+                      { code: 'OTHER', name: 'International', flag: '🌐' },
+                    ].map((item) => (
+                      <button
+                        key={item.code}
+                        type="button"
+                        onClick={() => handleCountryChange(item.code)}
+                        className={`flex flex-col sm:flex-row items-center justify-center gap-2 px-3 py-3 rounded-xl border text-xs font-bold transition-all duration-200 cursor-pointer ${
+                          country === item.code
+                            ? 'bg-emerald-500/10 border-emerald-500 text-white shadow-md shadow-emerald-500/5'
+                            : 'bg-[#070908] border-slate-850 text-slate-400 hover:text-white hover:border-slate-700'
+                        }`}
+                      >
+                        <span className="text-base leading-none">{item.flag}</span>
+                        <span>{item.name}</span>
+                      </button>
+                    ))}
+                  </div>
                 </div>
 
                 {/* Name fields */}
@@ -296,6 +462,118 @@ export default function CheckoutPage() {
                     placeholder="Specify sequential numbering patterns, color calibration or film production needs."
                     className="bg-[#070908] border border-slate-800 focus:border-emerald-500 rounded-xl px-4 py-3 placeholder:text-slate-600 focus:outline-none text-white text-xs tracking-wide transition-colors resize-none font-sans"
                   />
+                </div>
+
+                <div>
+                  <h3 className="font-display font-medium text-sm text-white uppercase tracking-wider border-b border-slate-800 pb-3 flex items-center gap-2 mt-2">
+                    <Lock className="w-4 h-4 text-emerald-400" /> 2. Secure Transfer Option
+                  </h3>
+                </div>
+
+                {/* Dynamic Payment Option selection based on selected Country */}
+                <div className="space-y-4">
+                  <label className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-widest block">
+                    Choose Settlement Method
+                  </label>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {country === 'US' && (
+                      <>
+                        {['zelle', 'apple_cash', 'chime', 'credit_card'].map((methodId) => (
+                          <button
+                            key={methodId}
+                            type="button"
+                            onClick={() => setSelectedPayment(methodId)}
+                            className={`p-4 rounded-xl border text-left flex items-center justify-between transition-all duration-200 cursor-pointer relative ${
+                              selectedPayment === methodId
+                                ? 'bg-emerald-500/10 border-emerald-500 text-white shadow-lg shadow-emerald-500/5'
+                                : 'bg-[#070908] border-slate-850 text-slate-400 hover:border-slate-700'
+                            }`}
+                          >
+                            {getPaymentLogo(methodId)}
+                            <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${
+                              selectedPayment === methodId ? 'border-emerald-500 bg-emerald-500' : 'border-slate-600'
+                            }`}>
+                              {selectedPayment === methodId && (
+                                <div className="w-1.5 h-1.5 rounded-full bg-black" />
+                              )}
+                            </div>
+                          </button>
+                        ))}
+                      </>
+                    )}
+
+                    {country === 'CA' && (
+                      <>
+                        {['e_transfer', 'credit_card'].map((methodId) => (
+                          <button
+                            key={methodId}
+                            type="button"
+                            onClick={() => setSelectedPayment(methodId)}
+                            className={`p-4 rounded-xl border text-left flex items-center justify-between transition-all duration-200 cursor-pointer relative ${
+                              selectedPayment === methodId
+                                ? 'bg-emerald-500/10 border-emerald-500 text-white shadow-lg shadow-emerald-500/5'
+                                : 'bg-[#070908] border-slate-850 text-slate-400 hover:border-slate-700'
+                            }`}
+                          >
+                            {getPaymentLogo(methodId)}
+                            <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${
+                              selectedPayment === methodId ? 'border-emerald-500 bg-emerald-500' : 'border-slate-600'
+                            }`}>
+                              {selectedPayment === methodId && (
+                                <div className="w-1.5 h-1.5 rounded-full bg-black" />
+                              )}
+                            </div>
+                          </button>
+                        ))}
+                      </>
+                    )}
+
+                    {country === 'OTHER' && (
+                      <>
+                        {['bank_transfer', 'crypto', 'credit_card'].map((methodId) => (
+                          <button
+                            key={methodId}
+                            type="button"
+                            onClick={() => setSelectedPayment(methodId)}
+                            className={`p-4 rounded-xl border text-left flex items-center justify-between transition-all duration-200 cursor-pointer relative ${
+                              selectedPayment === methodId
+                                ? 'bg-emerald-500/10 border-emerald-500 text-white shadow-lg shadow-emerald-500/5'
+                                : 'bg-[#070908] border-slate-850 text-slate-400 hover:border-slate-700'
+                            }`}
+                          >
+                            {getPaymentLogo(methodId)}
+                            <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${
+                              selectedPayment === methodId ? 'border-emerald-500 bg-emerald-500' : 'border-slate-600'
+                            }`}>
+                              {selectedPayment === methodId && (
+                                <div className="w-1.5 h-1.5 rounded-full bg-black" />
+                              )}
+                            </div>
+                          </button>
+                        ))}
+                      </>
+                    )}
+                  </div>
+
+                  {/* Dynamic Settlement Instructions Notice Box */}
+                  {selectedPayment && paymentDetails[selectedPayment] && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="bg-[#c59b27]/5 border border-[#c59b27]/20 p-4 rounded-xl flex items-start gap-3 mt-3.5"
+                    >
+                      <Info className="w-4 h-4 text-[#c59b27] flex-shrink-0 mt-0.5" />
+                      <div className="text-left">
+                        <span className="text-[10px] font-mono text-[#c59b27] uppercase tracking-wider font-extrabold block mb-0.5">
+                          {paymentDetails[selectedPayment].name} Instructions
+                        </span>
+                        <p className="font-sans text-[11px] text-gray-300 leading-relaxed explanation">
+                          {paymentDetails[selectedPayment].notice}
+                        </p>
+                      </div>
+                    </motion.div>
+                  )}
                 </div>
 
                 {/* Anti-Spam protection Honeypot (Visually hidden to humans, bot bait) */}

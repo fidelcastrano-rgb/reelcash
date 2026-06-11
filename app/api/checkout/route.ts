@@ -79,6 +79,8 @@ export async function POST(req: NextRequest) {
       phone,
       shippingAddress,
       orderNotes,
+      paymentMethod,
+      country,
       items,
       honeypot // spam protection honeypot
     } = body;
@@ -126,6 +128,12 @@ export async function POST(req: NextRequest) {
     const orderId = crypto.randomUUID();
     const createdAt = new Date().toISOString();
 
+    // Append Payment Method and Destination Country to order notes for direct dashboard visibility
+    const notesHeading = `[Payment Option: ${paymentMethod || 'Not Selected'}] [Region Group: ${country || 'International'}]`;
+    const formattedNotes = orderNotes && orderNotes.trim() !== '' 
+      ? `${notesHeading}\n---\nNotes:\n${orderNotes.trim()}`
+      : notesHeading;
+
     const dbOrder: DBOrder = {
       id: orderId,
       order_number: orderNumber,
@@ -134,7 +142,7 @@ export async function POST(req: NextRequest) {
       email: email.trim(),
       phone: phone.trim(),
       shipping_address: shippingAddress.trim(),
-      order_notes: orderNotes ? orderNotes.trim() : '',
+      order_notes: formattedNotes,
       total_amount: totalAmount,
       status: 'Pending',
       created_at: createdAt
@@ -180,6 +188,8 @@ export async function POST(req: NextRequest) {
             <table style="width: 100%; font-size: 14px; text-align: left;">
               <tr><th style="padding: 4px 0;">Order Number:</th><td><strong>${orderNumber}</strong></td></tr>
               <tr><th style="padding: 4px 0;">Created Date:</th><td>${new Date(createdAt).toLocaleString()}</td></tr>
+              <tr><th style="padding: 4px 0;">Payment Method:</th><td><span style="background-color: #dbeafe; color: #1e40af; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">${paymentMethod || 'Not Selected'}</span></td></tr>
+              <tr><th style="padding: 4px 0;">Destination Country:</th><td><strong>${country || 'International'}</strong></td></tr>
               <tr><th style="padding: 4px 0;">Order Value:</th><td><span style="color: #10b981; font-weight: bold;">$${totalAmount} USD</span></td></tr>
               <tr><th style="padding: 4px 0;">Status:</th><td><span style="background-color: #fef3c7; color: #d97706; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">Pending</span></td></tr>
             </table>
@@ -232,6 +242,8 @@ export async function POST(req: NextRequest) {
             <h3 style="border-bottom: 1px solid #eee; padding-bottom: 8px; color: #10b981; margin-top: 20px;">Order Summary</h3>
             <table style="width: 100%; font-size: 14px; text-align: left; margin-bottom: 20px;">
               <tr><th style="padding: 4px 0; width: 120px;">Order Number:</th><td><strong>${orderNumber}</strong></td></tr>
+              <tr><th style="padding: 4px 0;">Payment Method:</th><td><strong>${paymentMethod || 'Not Selected'}</strong></td></tr>
+              <tr><th style="padding: 4px 0;">Destination:</th><td>${country || 'International'}</td></tr>
               <tr><th style="padding: 4px 0;">Order Total:</th><td style="font-weight: bold; color: #10b981;">$${totalAmount} USD</td></tr>
               <tr><th style="padding: 4px 0; vertical-align: top;">Shipping To:</th><td>${dbOrder.shipping_address.replace(/\n/g, '<br/>')}</td></tr>
             </table>
