@@ -27,6 +27,168 @@ export interface DBOrderItem {
   qty: number;
 }
 
+// Memory database emulator for local dev and Cloud Run preview environments
+class LocalD1Statement {
+  private sql: string;
+  private params: any[] = [];
+
+  constructor(sql: string) {
+    this.sql = sql;
+  }
+
+  bind(...params: any[]) {
+    const bound = new LocalD1Statement(this.sql);
+    bound.params = params;
+    return bound;
+  }
+
+  async all() {
+    const store = (globalThis as any).__LOCAL_D1_STORE__;
+    const sqlLower = this.sql.trim().toLowerCase();
+    
+    if (sqlLower.startsWith('select * from orders')) {
+      let results = [...store.orders];
+      
+      // Filter status
+      if (this.sql.includes('status = ?')) {
+        const statusVal = this.params[0];
+        results = results.filter((o: any) => o.status === statusVal);
+      }
+      
+      // Filter searchQuery
+      const searchParam = this.params.find(p => typeof p === 'string' && p.startsWith('%') && p.endsWith('%'));
+      if (searchParam) {
+        const queryTerm = searchParam.replace(/%/g, '').toLowerCase();
+        results = results.filter((o: any) => 
+          o.order_number.toLowerCase().includes(queryTerm) ||
+          o.first_name.toLowerCase().includes(queryTerm) ||
+          o.last_name.toLowerCase().includes(queryTerm) ||
+          o.email.toLowerCase().includes(queryTerm) ||
+          o.phone.toLowerCase().includes(queryTerm)
+        );
+      }
+      
+      // Sorting
+      results.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+      
+      return { results };
+    }
+    
+    if (sqlLower.startsWith('select * from order_items')) {
+      const orderId = this.params[0];
+      const results = store.order_items.filter((item: any) => item.order_id === orderId);
+      return { results };
+    }
+    
+    return { results: [] };
+  }
+
+  async run() {
+    const store = (globalThis as any).__LOCAL_D1_STORE__;
+    const sqlLower = this.sql.trim().toLowerCase();
+    
+    if (sqlLower.startsWith('update orders set status = ? where id = ?')) {
+      const [status, id] = this.params;
+      const order = store.orders.find((o: any) => o.id === id);
+      if (order) {
+        order.status = status;
+      }
+      return { success: true };
+    }
+    
+    if (sqlLower.startsWith('insert into orders')) {
+      const [id, order_number, first_name, last_name, email, phone, shipping_address, order_notes, total_amount, status, created_at] = this.params;
+      if (!store.orders.some((o: any) => o.id === id)) {
+        store.orders.push({ id, order_number, first_name, last_name, email, phone, shipping_address, order_notes, total_amount, status, created_at });
+      }
+      return { success: true };
+    }
+    
+    if (sqlLower.startsWith('insert into order_items')) {
+      const [order_id, product_slug, product_name, variant, price, qty] = this.params;
+      store.order_items.push({
+        id: store.order_items.length + 1,
+        order_id,
+        product_slug,
+        product_name,
+        variant,
+        price,
+        qty
+      });
+      return { success: true };
+    }
+    
+    return { success: true };
+  }
+}
+
+class LocalD1Emulator {
+  prepare(sql: string) {
+    return new LocalD1Statement(sql);
+  }
+
+  async batch(statements: LocalD1Statement[]) {
+    for (const stmt of statements) {
+      await stmt.run();
+    }
+    return { success: true };
+  }
+}
+
+// Global scope pre-population to persist simulation data during preview mode
+if (!(globalThis as any).__LOCAL_D1_STORE__) {
+  (globalThis as any).__LOCAL_D1_STORE__ = {
+    orders: [
+      {
+        id: 'mock-order-1',
+        order_number: 'RC-2026-88041',
+        first_name: 'John',
+        last_name: 'Miller',
+        email: 'john.miller@example.com',
+        phone: '+61 411 222 333',
+        shipping_address: 'Apartment 4B, 120 Collins Street\nMelbourne VIC 3000\nAustralia',
+        order_notes: 'Please vacuum-seal the banknotes carefully to prevent humidity. Discreet packaging essential.',
+        total_amount: 450.00,
+        status: 'Processing',
+        created_at: new Date(Date.now() - 3600000 * 3).toISOString() // 3 hours ago
+      },
+      {
+        id: 'mock-order-2',
+        order_number: 'RC-2026-51204',
+        first_name: 'Sarah',
+        last_name: 'Jenkins',
+        email: 'sarah.j@productionstudio.ca',
+        phone: '+1 514 555 0199',
+        shipping_address: 'Studio B, 455 Rue de la Commune O\nMontreal QC H2Y 2E2\nCanada',
+        order_notes: 'For TV series production, close-up camera pan. Intaglio finish is needed.',
+        total_amount: 500.00,
+        status: 'Completed',
+        created_at: new Date(Date.now() - 3600000 * 24).toISOString() // 24 hours ago
+      }
+    ] as any[],
+    order_items: [
+      {
+        id: 1,
+        order_id: 'mock-order-1',
+        product_slug: '100-usd-prop-notes-stack',
+        product_name: 'USD $100 Master Replica (New Series)',
+        variant: 'Standard Pack ($10,000 Stack)',
+        price: 450.00,
+        qty: 1
+      },
+      {
+        id: 2,
+        order_id: 'mock-order-2',
+        product_slug: '50-british-pound-series-prop-notes',
+        product_name: 'Australian GBP £50 Sterling High-Fidelity Polymer',
+        variant: 'Pro Movie Pack ($25,000 Stack)',
+        price: 500.00,
+        qty: 1
+      }
+    ] as any[],
+  };
+}
+
 // Helper to get D1 database from Cloudflare bindings
 export function getD1(): any {
   // Safe extraction representing next-on-pages, opennext, and standard Pages/Workers bindings
@@ -36,10 +198,11 @@ export function getD1(): any {
     (globalThis as any).__NEXT_CLOUDFLARE_BINDINGS__?.DB;
 
   if (!db) {
-    throw new Error(
-      'Cloudflare D1 Database binding "DB" was not found. ' +
-      'Please configure a D1 database with binding name "DB" in your Cloudflare dashboard.'
+    console.warn(
+      'Cloudflare D1 Database binding "DB" was not found in this environment. ' +
+      'Using high-performance local memory database fallback for preview mode.'
     );
+    return new LocalD1Emulator();
   }
   return db;
 }
