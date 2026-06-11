@@ -37,7 +37,8 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  output: 'standalone',
+  // Disable standalone to ensure accurate relative path resolution in container builds
+  // output: 'standalone',
   transpilePackages: ['motion'],
   webpack: (config, {dev}) => {
     // HMR is disabled in AI Studio via DISABLE_HMR env var.
