@@ -94,7 +94,7 @@ export default async function BlogPostPage({ params }: PageProps) {
               priority
               sizes="(max-width: 1024px) 100vw, 800px"
               className="object-cover opacity-85"
-              referrerPolicy="no-referrer"
+              referrerPolicy="strict-origin-when-cross-origin"
             />
           </div>
 
@@ -154,7 +154,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                       fill
                       sizes="80px"
                       className="object-cover"
-                      referrerPolicy="no-referrer"
+                      referrerPolicy="strict-origin-when-cross-origin"
                     />
                   </div>
                   <div className="flex-1 min-w-0 text-left">

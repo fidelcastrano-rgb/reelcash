@@ -360,7 +360,7 @@ export default function ProductDetailPageClient({ product, relatedProducts }: Pr
                   fill
                   sizes="180px"
                   className="object-cover"
-                  referrerPolicy="no-referrer"
+                  referrerPolicy="strict-origin-when-cross-origin"
                 />
               </div>
               

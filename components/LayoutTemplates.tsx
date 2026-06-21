@@ -73,7 +73,7 @@ export function Navbar() {
                 alt="Reel Cash Logo"
                 fill
                 className="object-cover"
-                referrerPolicy="no-referrer"
+                referrerPolicy="strict-origin-when-cross-origin"
               />
             </div>
             <div className="flex flex-col">

@@ -53,7 +53,7 @@ function ProductGridCard({ product }: ProductCardProps) {
           fill
           sizes="(max-width: 1024px) 100vw, 33vw"
           className="object-cover transition-transform duration-500 group-hover:scale-105"
-          referrerPolicy="no-referrer"
+          referrerPolicy="strict-origin-when-cross-origin"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0f1311] via-transparent to-transparent"></div>
         
