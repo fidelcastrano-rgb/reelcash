@@ -292,7 +292,7 @@ export default function CheckoutPage() {
               Continue Browsing
             </Link>
             <a 
-              href={`https://wa.me/447341056054?text=Hello%20Support,%20I%20just%2520placed%20order%20%23${successOrderNumber}%20and%20wanted%20to%20verify%20payment.`}
+              href={`https://wa.me/18437320661?text=Hello%20Support,%20I%20just%2520placed%20order%20%23${successOrderNumber}%20and%20wanted%20to%20verify%20payment.`}
               target="_blank"
               rel="noopener noreferrer"
               className="flex-1 py-3 bg-transparent text-gray-300 border border-slate-700 hover:border-slate-500 text-xs font-bold uppercase tracking-widest rounded-xl transition-all block text-center"

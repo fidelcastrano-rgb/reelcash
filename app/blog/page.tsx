@@ -123,7 +123,7 @@ export default function BlogListingPage() {
             We periodically broadcast log edits regarding printing innovations and advanced texture designs. Request registration directly via WhatsApp channels.
           </p>
           <a
-            href="https://wa.me/447341056054?text=Register%20me%20for%20Reel%20Cash%20Texture%20Newsletters"
+            href="https://wa.me/18437320661?text=Register%20me%20for%20Reel%20Cash%20Texture%20Newsletters"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex py-2.5 px-6 font-mono font-bold text-[10px] uppercase bg-transparent text-gray-300 hover:text-white border border-gray-700 hover:border-gray-500 rounded tracking-widest transition-all"
